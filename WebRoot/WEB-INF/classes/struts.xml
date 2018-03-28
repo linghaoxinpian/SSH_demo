@@ -31,8 +31,10 @@
 	</package> 
 	
 	
-	<!-- 包含测试模块的struts配置文件 -->
+	 <!-- 包含测试模块的struts配置文件 -->
 	 <include file="test/conf/test-struts.xml"></include>
-	 <!-- 包含struts配置文件 -->
+	 <!-- 包含user模块的struts配置文件 -->
 	 <include file="taxservice/user/conf/user-struts.xml"></include>
+	 <!-- 包含role模块的struts配置文件 -->
+	 <include file="taxservice/role/conf/role-struts.xml"></include>
 </struts>

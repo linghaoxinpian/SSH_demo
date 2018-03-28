@@ -9,10 +9,11 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import core.dao.BaseDao;
 
+@SuppressWarnings("unchecked")
 public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
 	
 	Class<T> clazz;
-	
+		
 	public BaseDaoImpl(){
 		ParameterizedType pt =  (ParameterizedType)this.getClass().getGenericSuperclass();//BaseDaoImpl<User>
 		clazz = (Class<T>)pt.getActualTypeArguments()[0];
