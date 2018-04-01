@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
+import com.opensymphony.xwork2.ActionContext;
+
+import taxservice.role.service.RoleService;
 import taxservice.user.entity.User;
+import taxservice.user.entity.UserRole;
 import taxservice.user.service.UserService;
 
 import core.action.BaseAction;
@@ -23,12 +27,15 @@ public class UserAction extends BaseAction {
 	
 	@Resource
 	private UserService userService;
+	@Resource
+	private RoleService roleService;
 	private List<User> userList;
 	private User user;
 	//头像属性
 	private File headImg;
 	private String headImgFileName; 
 	private String headImgContentType;
+	private String[] userRoleIds;
 
 	//列表页面
 	public String listUI(){;
@@ -37,6 +44,7 @@ public class UserAction extends BaseAction {
 	}
 	//跳转到新增页面
 	public String addUI(){
+		ActionContext.getContext().getContextMap().put("roleList", roleService.findObjects());
 		return "addUI";
 	}
 	//保存新增
@@ -51,21 +59,25 @@ public class UserAction extends BaseAction {
 				//设置头像
 				user.setHeadImg("user/"+fileName);
 			}
-			userService.save(user);
+			userService.saveUserAndRole(user,userRoleIds);	//user->role 多对多关系
 		}
 
 		return "list";
 	}
 	//跳转到编辑页面
 	public String editUI() throws SysException {
-		try {
+		ActionContext.getContext().getContextMap().put("roleList",roleService.findObjects());
 			if (user != null && user.getId() != null) {
 				user = userService.findObjectById(user.getId());
+				//角色权限的回显
+				List<UserRole> list= userService.findUserRolesByUserId(user.getId());
+				int i=0;
+				userRoleIds=new String[list.size()];
+				for(UserRole userRole:list){
+					userRoleIds[i++]=userRole.getId().getRole().getRoleId();
+				}
 			}
 			return "editUI";
-		} catch (Exception e) {
-			throw new SysException(e.getMessage());
-		}
 	}
 	//保存编辑
 	public String edit() throws IOException{
@@ -79,7 +91,7 @@ public class UserAction extends BaseAction {
 				//设置头像
 				user.setHeadImg("user/"+fileName);
 			}
-			userService.update(user);
+			userService.updateUserAndRole(user,userRoleIds);
 		}
 		return "list";
 	}
@@ -154,6 +166,12 @@ public class UserAction extends BaseAction {
 	}
 	public void setHeadImgContentType(String headImgContentType) {
 		this.headImgContentType = headImgContentType;
+	}
+	public String[] getUserRoleIds() {
+		return userRoleIds;
+	}
+	public void setUserRoleIds(String[] userRoleIds) {
+		this.userRoleIds = userRoleIds;
 	}	
 
 }

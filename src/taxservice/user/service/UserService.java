@@ -5,6 +5,7 @@ import java.util.List;
 
 import core.exception.ServiceException;
 import taxservice.user.entity.User;
+import taxservice.user.entity.UserRole;
 
 public interface UserService {
 
@@ -18,6 +19,13 @@ public interface UserService {
 	public User findObjectById(Serializable id) throws ServiceException;
 	//查找列表
 	public List<User> findObjects();
+	
 	public List<User> findUserByIdAndAccount(String id, String account);
+	
+	public void saveUserAndRole(User user, String... userRoleIds);
+	
+	public List<UserRole> findUserRolesByUserId(String userId);
+	
+	public void updateUserAndRole(User user, String... userRoleIds);
 
 }

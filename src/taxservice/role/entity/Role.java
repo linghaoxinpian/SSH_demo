@@ -11,6 +11,16 @@ public class Role {
 	//角色的启用状态
 	public static String ROLE_STATE_VALID="1";
 	public static String ROLE_STATE_INVALID="0";
+	
+	public Role(){
+		
+	}
+	
+	public Role(String roleId) {
+		this.roleId = roleId;
+	}
+	
+	
 //----------------属性------------------	
 	public String getRoleId() {
 		return roleId;
@@ -35,7 +45,6 @@ public class Role {
 	}
 	public void setRolePrivileges(Set<RolePrivilege> rolePrivileges) {
 		this.rolePrivileges = rolePrivileges;
-	}
-	
+	}	
 	
 }

@@ -73,7 +73,7 @@
         </tr>
         <tr>
             <td class="tdBg" width="200px">角色：</td>
-            <td></td>
+            <td><s:checkboxlist list="#roleList"  listKey="roleId" listValue="name" name="userRoleIds"></s:checkboxlist></td>
         </tr>
         <tr>
             <td class="tdBg" width="200px">电子邮箱：</td>

@@ -5,7 +5,7 @@
     <title>用户管理</title>
     <script type="text/javascript" src="${basePath }js/datepicker/WdatePicker.js"></script>
     <script>
-    var ver_result=false;
+    	var ver_result=false;
     	//添加用户时，验证用户唯一性
     	function doVerify(){
     		var account=$("#account").val();
@@ -13,6 +13,7 @@
     			$.ajax({
     				url:"${basePath}nsfw/user_verifyAccount.action",
     				data:{"user.account":account,"user.id":"${user.id}"},
+    				async:false,	//取消异步，为什么呢，因为让doSubmit方法阻塞等待校验结果
     				type:"post",
     				success:function(msg){
     					if("true"!=msg){    					
@@ -29,6 +30,7 @@
     	
     	//提交表单时再一次校验
     	function doSubmit(){
+    		doVerify();
     		if(!ver_result){
     			alert("帐号已存在!!!");
     			return;
@@ -77,7 +79,7 @@
         </tr>
         <tr>
             <td class="tdBg" width="200px">角色：</td>
-            <td></td>
+            <td><s:checkboxlist list="#roleList"  listKey="roleId" listValue="name" name="userRoleIds"></s:checkboxlist></td>
         </tr>
         <tr>
             <td class="tdBg" width="200px">电子邮箱：</td>
