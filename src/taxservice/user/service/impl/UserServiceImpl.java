@@ -75,12 +75,17 @@ public class UserServiceImpl implements UserService {
 	public void updateUserAndRole(User user, String... userRoleIds) {
 		//1.先删除当前用户原有的所有角色
 		userDao.deleteUserRoleByUserId(user.getId());
-		//2.更新用户信息
+		//2.更新用户信息r
 		update(user);
 		//3.更新用户所属角色
 		for (int i = 0, length = userRoleIds.length; i < length; i++) {
 			userDao.saveUserAndRole(new UserRole(new UserRoleId(new Role(userRoleIds[i]),user.getId())));
 		}
+	}
+
+	@Override
+	public List<User> findUserByAccountAndPassword(String account, String password) {
+		return userDao.findUserByAccountAndPassword(account,password);
 	}
 
 }

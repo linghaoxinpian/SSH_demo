@@ -27,5 +27,12 @@ public interface UserService {
 	public List<UserRole> findUserRolesByUserId(String userId);
 	
 	public void updateUserAndRole(User user, String... userRoleIds);
+	/**
+	 * 为什么返回的是List？思考...
+	 * @param account
+	 * @param password
+	 * @return
+	 */
+	public List<User> findUserByAccountAndPassword(String account, String password);
 
 }

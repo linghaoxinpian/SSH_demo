@@ -9,6 +9,16 @@
   	<param-name>contextConfigLocation</param-name>
   	<param-value>classpath:applicationContext.xml</param-value>
   </context-param>
+  <!-- 登录过滤器 -->
+  <filter>
+  	<filter-name>loginFilter</filter-name>
+  	<filter-class>core.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>loginFilter</filter-name>
+  	<url-pattern>*.action</url-pattern>
+  </filter-mapping>
+  
   <!-- struts2 过滤器 -->
   <filter>
   	<filter-name>struts2</filter-name>

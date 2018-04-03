@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public  class Constant {
+	
+	public static final String SYS_USER = "SYS_USER";
+	
 	/*----------------------系统权限集合--------------------------*/
 	public static String PRIVILEGE_XZGL = "xzgl"; 
 	public static String PRIVILEGE_HQFW = "hqfw"; 

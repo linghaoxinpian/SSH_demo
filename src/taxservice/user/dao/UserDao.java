@@ -17,4 +17,6 @@ public interface UserDao extends BaseDao<User> {
 
 	public void deleteUserRoleByUserId(Serializable userId);
 
+	public List<User> findUserByAccountAndPassword(String account, String password);
+
 }
