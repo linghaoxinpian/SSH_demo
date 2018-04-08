@@ -43,6 +43,8 @@
 	 <include file="taxservice/home/conf/home-struts.xml"></include>
 	 <!-- 包含login模块的struts配置文件 -->
 	 <include file="login/conf/login-struts.xml"></include>
+	 <!-- 包含info模块的struts配置文件 -->
+	 <include file="taxservice/info/conf/info-struts.xml"></include>
 </struts>
 
 
