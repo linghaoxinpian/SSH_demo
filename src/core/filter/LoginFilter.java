@@ -11,7 +11,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import core.constant.Constant;
+import core.permission.PermissionCheck;
+import taxservice.user.entity.User;
 
 public class LoginFilter implements Filter {
 
@@ -34,8 +39,21 @@ public class LoginFilter implements Filter {
 		}else{
 			//非登录请求,检查
 			if(httpServletRequest.getSession().getAttribute(Constant.SYS_USER)!=null){
-				//已登录，放行
-				chain.doFilter(servletRequest, servletResponse);				
+				//已登录，继续检查访问的是否是：纳税服务
+				if(uri.contains("nsfw")){
+					//访问的是 "纳税服务",继续判断是否具有访问权限
+					WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(httpServletRequest.getSession().getServletContext());	//获取该Web应用从启动时就创建的第一个Spring容器，不用ClassPath...的方法是因为会过度消耗内存
+					PermissionCheck permission= (PermissionCheck) webApplicationContext.getBean("permissionCheck");					
+					if(permission.isAccessible((User) httpServletRequest.getSession().getAttribute(Constant.SYS_USER), "nsfw")){
+						//有权限访问
+						chain.doFilter(httpServletRequest, httpServletResponse);
+					}else{
+						//无权限访问,重定向
+						httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/sys/login_toNoPermissionUI.action");
+					}
+				}else{					
+					chain.doFilter(httpServletRequest, httpServletResponse);
+				}
 			}else{
 				//未登录，重定向到登陆页面
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/sys/login_toLoginUI.action");

@@ -5,7 +5,7 @@
 <hibernate-mapping>
 	<class name="taxservice.user.entity.UserRole" table="user_role">
 		<composite-id name="id" class="taxservice.user.entity.UserRoleId">
-			<key-many-to-one name="role" class="taxservice.role.entity.Role">
+			<key-many-to-one name="role" lazy="false" class="taxservice.role.entity.Role">
 				<column name="role_id" ></column>				
 			</key-many-to-one>		
 			<key-property name="userId" type="java.lang.String">

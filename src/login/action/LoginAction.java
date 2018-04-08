@@ -10,6 +10,7 @@ import org.apache.struts2.ServletActionContext;
 import core.action.BaseAction;
 import core.constant.Constant;
 import taxservice.user.entity.User;
+import taxservice.user.entity.UserRole;
 import taxservice.user.service.UserService;
 
 public class LoginAction extends BaseAction {
@@ -29,7 +30,11 @@ public class LoginAction extends BaseAction {
 				List<User> list= userService.findUserByAccountAndPassword(user.getAccount(),user.getPassword());
 				if(list!=null && list.size()>0){
 					User user=list.get(0);
-					ServletActionContext.getRequest().getSession().setAttribute(Constant.SYS_USER, user);	//将登陆用户的信息存储到Session中
+					//查询该用户所拥有的角色
+					user.setUserRoles(userService.findUserRolesByUserId(user.getId()));
+					
+					//将登陆用户的信息存储到Session中
+					ServletActionContext.getRequest().getSession().setAttribute(Constant.SYS_USER, user);	
 					
 					//跳转到首页
 					return "home";
