@@ -5,10 +5,16 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
+
 import com.opensymphony.xwork2.ActionContext;
 import taxservice.info.entity.Info;
 import taxservice.info.service.InfoService;
 import core.action.BaseAction;
+import core.util.QueryHelper;
 
 public class InfoAction extends BaseAction {	
 	
@@ -21,9 +27,20 @@ public class InfoAction extends BaseAction {
 	private String[] privilegeIds;
 
 	//列表页面
-	public String listUI(){
-		ActionContext.getContext().put("infoTypeMap", Info.INFO_TYPE_MAP);
-		infoList = infoService.findObjects();
+	public String listUI(){		
+		if(info!=null){
+			//搜索条件不为空
+			QueryHelper queryHelper=new QueryHelper(Info.class,"i");
+			queryHelper.addCondition("i.title like ?", "%"+info.getTitle()+"%");
+			queryHelper.addOrderBy("i.createTime",QueryHelper.ORDER_BY_ASC);
+			System.out.println(info.getTitle()+"------"+queryHelper.getQueryListHql());
+			
+			//查询
+			infoList= infoService.findObjects(queryHelper);			
+		}else{
+			ActionContext.getContext().put("infoTypeMap", Info.INFO_TYPE_MAP);
+			infoList = infoService.findObjects();
+		}
 		return "listUI";
 	}
 	//跳转到新增页面
@@ -77,7 +94,20 @@ public class InfoAction extends BaseAction {
 		return "list";
 	}
 	
-	
+	public void publicInfo() throws IOException{
+		if(info!=null){
+			info=infoService.findObjectById(info.getInfoId());
+			info.setState(info.getState());
+			infoService.update(info);
+			
+			//异步返回结果
+			HttpServletResponse response = ServletActionContext.getResponse();
+			response.setContentType("text/html");
+			ServletOutputStream outputStream = response.getOutputStream();
+			outputStream.write("更新状态成功".getBytes("utf-8"));
+			outputStream.close();			
+		}
+	}
 		
 //----------------属性----------------------	
 	public List<Info> getInfoList() {

@@ -2,6 +2,8 @@ package taxservice.info.service;
 
 import java.io.Serializable;
 import java.util.List;
+
+import core.util.QueryHelper;
 import taxservice.info.entity.Info;
 
 public interface InfoService {
@@ -15,4 +17,6 @@ public interface InfoService {
 	public Info findObjectById(Serializable id);
 	//查找列表
 	public List<Info> findObjects();
+	
+	public List<Info> findObjects(QueryHelper queryHelper);
 }

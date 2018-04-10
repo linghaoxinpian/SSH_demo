@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import core.util.QueryHelper;
 import taxservice.info.service.InfoService;
 import taxservice.info.dao.InfoDao;
 import taxservice.info.entity.Info;
@@ -37,5 +39,11 @@ public class InfoServiceImpl implements InfoService {
 	@Override
 	public List<Info> findObjects() {
 		return infoDao.findObjects();
+	}
+
+	@Override
+	public List<Info> findObjects(QueryHelper queryHelper) {
+		
+		return infoDao.findObjects(queryHelper);
 	}
 }

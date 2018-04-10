@@ -8,8 +8,9 @@ import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import core.dao.BaseDao;
+import core.util.QueryHelper;
+import taxservice.info.entity.Info;
 
-@SuppressWarnings("unchecked")
 public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
 	
 	Class<T> clazz;
@@ -45,4 +46,13 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 		return query.list();
 	}
 
+	public List<T> findObjects(QueryHelper queryHelper){
+		Query query = getSession().createQuery(queryHelper.getQueryListHql());
+		if(queryHelper.getParameters()!=null){
+			for (int i = 0, length = queryHelper.getParameters().size(); i < length; i++) {
+				query.setParameter(i, queryHelper.getParameters().get(i));
+			}
+		}
+		return query.list();
+	}
 }

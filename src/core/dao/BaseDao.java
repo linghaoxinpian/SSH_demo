@@ -3,6 +3,9 @@ package core.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import core.util.QueryHelper;
+import taxservice.info.entity.Info;
+
 public interface BaseDao<T> {
 	
 	//新增
@@ -16,4 +19,10 @@ public interface BaseDao<T> {
 	//查找列表
 	public List<T> findObjects();
 
+	/**
+	 * 根据Hql语句查询结果集
+	 * @param queryHelper
+	 * @return
+	 */
+	public List<T> findObjects(QueryHelper queryHelper);
 }
