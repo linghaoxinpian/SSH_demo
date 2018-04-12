@@ -60,6 +60,8 @@
         <input type="button"  onclick="javascript:history.go(-1)" class="btnB2" value="返回" />
     </div>
     </div></div></div>
+    <!-- 保存用户搜索字符串 -->
+    <s:hidden name="searchStr"></s:hidden>
 </form>
 </body>
 </html>

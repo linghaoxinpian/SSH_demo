@@ -25,6 +25,7 @@ public class InfoAction extends BaseAction {
 	private List<Info> infoList;
 	private Info info;
 	private String[] privilegeIds;
+	private String searchStr;	//用户搜索字符串(title)
 
 	//列表页面
 	public String listUI(){		
@@ -33,7 +34,6 @@ public class InfoAction extends BaseAction {
 			QueryHelper queryHelper=new QueryHelper(Info.class,"i");
 			queryHelper.addCondition("i.title like ?", "%"+info.getTitle()+"%");
 			queryHelper.addOrderBy("i.createTime",QueryHelper.ORDER_BY_ASC);
-			System.out.println(info.getTitle()+"------"+queryHelper.getQueryListHql());
 			
 			//查询
 			infoList= infoService.findObjects(queryHelper);			
@@ -41,6 +41,10 @@ public class InfoAction extends BaseAction {
 			ActionContext.getContext().put("infoTypeMap", Info.INFO_TYPE_MAP);
 			infoList = infoService.findObjects();
 		}
+/*		if(searchStr!=null){
+			//还原用户搜索字符串
+			info.setTitle(searchStr);
+		}*/
 		return "listUI";
 	}
 	//跳转到新增页面
@@ -67,6 +71,8 @@ public class InfoAction extends BaseAction {
 		ActionContext.getContext().put("infoTypeMap", Info.INFO_TYPE_MAP);
 		if (info != null && info.getInfoId() != null) {
 			info = infoService.findObjectById(info.getInfoId());
+			//保存用户搜素字符串
+			searchStr=info.getTitle();
 		}
 		return "editUI";	
 	}
@@ -127,6 +133,12 @@ public class InfoAction extends BaseAction {
 	}
 	public void setPrivilegeIds(String[] privilegeIds) {
 		this.privilegeIds = privilegeIds;
+	}
+	public String getSearchStr() {
+		return searchStr;
+	}
+	public void setSearchStr(String searchStr) {
+		this.searchStr = searchStr;
 	}	
 	
 }
